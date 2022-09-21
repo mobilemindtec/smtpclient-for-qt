@@ -52,3 +52,11 @@ OTHER_FILES += \
     README.md
 
 FORMS +=
+
+# Default rules for deployment.
+unix {
+    headers.files = $$HEADERS
+    headers.path = /usr/include/SMTPEmail
+    target.path = /usr/lib
+}
+!isEmpty(target.path): INSTALLS += target headers
