@@ -27,6 +27,7 @@
 /* [1] Constructors and Destructors */
 
 MimeMessage::MimeMessage(bool createAutoMimeContent) :
+    replyTo(Q_NULLPTR),
     hEncoding(MimePart::_8Bit)
 {
     if (createAutoMimeContent)
@@ -48,6 +49,21 @@ MimePart& MimeMessage::getContent() {
 void MimeMessage::setContent(MimePart *content) {
     this->content = content;
 }
+
+void MimeMessage::setReplyTo(EmailAddress* rto) {
+    replyTo = rto;
+}
+
+const EmailAddress* MimeMessage::getReplyTo() const {
+    return replyTo;
+}
+
+void MimeMessage::setInReplyTo(const QString& inReplyTo)
+{
+    mInReplyTo = inReplyTo;
+}
+
+
 
 void MimeMessage::setSender(const EmailAddress &sender)
 {
@@ -223,7 +239,23 @@ void MimeMessage::writeToDevice(QIODevice &out) const {
         header.append("\r\n");
     }
 
+    /* ---------- Reply-To -------------- */
+     if (replyTo) {
+         header.append("Reply-To: ");
+         header.append(formatAddress(*replyTo, hEncoding));
+         header.append("\r\n");
+     }
+
+     /* ---------------------------------- */
+
+
     header.append("MIME-Version: 1.0\r\n");
+
+    if (!mInReplyTo.isEmpty())
+    {
+        header.append("In-Reply-To: <").append(format(mInReplyTo, hEncoding)).append(">\r\n");
+        header.append("References: <").append(format(mInReplyTo, hEncoding)).append(">\r\n");
+    }
 
     out.write(header);
     content->writeToDevice(out);

@@ -2,5 +2,7 @@
 *.so
 *.so.*
 Makefile
-moc_*.cpp
+moc_*
 *.pro.user*
+.qmake.stash
+.qtc_clangd

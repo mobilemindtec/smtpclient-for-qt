@@ -56,7 +56,8 @@ public:
     void addCustomHeader(const QString &hdr);
     void setSubject(const QString &subject);
     void addPart(MimePart* part);
-
+    void setReplyTo(EmailAddress* rto);
+     void setInReplyTo(const QString& inReplyTo);
     void setHeaderEncoding(MimePart::Encoding);
 
     EmailAddress getSender() const;
@@ -64,6 +65,7 @@ public:
     QString getSubject() const;
     const QStringList &getCustomHeaders() const;
     const QList<MimePart*> & getParts() const;
+    const EmailAddress* getReplyTo() const;
 
     MimePart& getContent();
     void setContent(MimePart *content);
@@ -82,6 +84,8 @@ protected:
     /* [4] Protected members */
 
     EmailAddress sender;
+    EmailAddress* replyTo;
+    QString mInReplyTo;
     QList<EmailAddress> recipientsTo, recipientsCc, recipientsBcc;
     QString subject;
     QStringList customHeaders;
