@@ -240,7 +240,7 @@ void MimeMessage::writeToDevice(QIODevice &out) const {
     }
 
     /* ---------- Reply-To -------------- */
-     if (replyTo) {
+     if (replyTo != nullptr) {
          header.append("Reply-To: ");
          header.append(formatAddress(*replyTo, hEncoding));
          header.append("\r\n");
